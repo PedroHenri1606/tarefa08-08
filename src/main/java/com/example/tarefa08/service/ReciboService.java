@@ -1,5 +1,6 @@
 package com.example.tarefa08.service;
 
+import com.example.tarefa08.dto.ReciboDTO;
 import com.example.tarefa08.entity.Recibo;
 import org.springframework.stereotype.Service;
 
@@ -9,43 +10,63 @@ import java.util.List;
 @Service
 public class ReciboService {
 
-    public Recibo calculo(final List<Double> numeros){
+    public Recibo recebeNumeros(final List<Double> numeros) {
 
         if (numeros == null || numeros.size() < 20) {
-            throw new ("A lista de números deve conter pelo menos 20 elementos.");
+            throw new RuntimeException("A lista de números deve conter pelo menos 20 elementos.");
         }
+        ReciboDTO reciboDTO = new ReciboDTO();
+        reciboDTO.setNumeros(numeros);
 
-        Recibo recibo = new Recibo();
+        return new Recibo(media(numeros),desvioPadrao(numeros),numeros.size(),mediana(numeros));
+    }
+
+    public double media(List<Double> numeros) {
+
+        double media;
 
         double soma = 0;
-        for (Double numero : numeros){
+        for (Double numero : numeros) {
             soma += numero;
         }
+        return media = soma / numeros.size();
+    }
 
-        double media = soma / numeros.size();
-        recibo.setMedia(media);
+    public double mediana(List<Double> numeros) {
 
         Collections.sort(numeros);
         double mediana;
-        if(numeros.size() % 2 == 0){
-            mediana = (numeros.get(numeros.size() / 2 - 1) + numeros.get(numeros.size() / 2)) /2;
+        if (numeros.size() % 2 == 0) {
+            mediana = (numeros.get(numeros.size() / 2 - 1) + numeros.get(numeros.size() / 2)) / 2;
         } else {
-            mediana = numeros.get(numeros.size() /2);
+            mediana = numeros.get(numeros.size() / 2);
         }
 
-        recibo.setMediana(mediana);
+        return mediana;
+    }
+
+    public double desvioPadrao(List<Double> numeros){
 
         double somaDiferencaQuadradado = 0;
         for(Double numero : numeros){
-            somaDiferencaQuadradado += Math.pow(numero - media, 2);
+            somaDiferencaQuadradado += Math.pow(numero - media(numeros), 2);
         }
         double desvioPadrao = Math.sqrt(somaDiferencaQuadradado / numeros.size());
 
-        recibo.setDesvioPadrao(desvioPadrao);
-        recibo.setQuantidadeDados(numeros.size());
+        return desvioPadrao;
+    }
 
-        return recibo;
+    public double valorMenor(List<Double> numeros){
+        double menorNumero;
+        Collections.sort(numeros);
 
+        return menorNumero = numeros.get(0);
+    }
 
+    public double valorMaior(List<Double> numeros){
+        double menorNumero;
+        Collections.sort(numeros);
+
+        return menorNumero = numeros.get(numeros.size()-1);
     }
 }

@@ -6,7 +6,7 @@ import com.example.tarefa08.service.ReciboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,10 +16,10 @@ public class ReciboController{
     @Autowired
     private ReciboService service;
 
-    @GetMapping()
+    @PostMapping()
     public ResponseEntity<?> calculo(@RequestBody final ReciboDTO reciboDTO){
 
-        Recibo recibo = service.calculo(reciboDTO.getNumeros());
+        Recibo recibo = service.recebeNumeros(reciboDTO.getNumeros());
 
         System.out.println("Média: " + recibo.getMedia());
         System.out.println("Mediana: " + recibo.getMediana());
